@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</head>
+<body>
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <!--<img src="https://www.freepik.com/free-vector/isolated-medicine-symbol_803477.htm#query=hospital%20logo&position=0&from_view=keyword" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">-->
+        Hospital Appointment Booking
+      </a>
+    </div>
+  </nav>
+
+  <div class="container" style="margin-top: 25px;">
+    <table class="table table-striped">
+      <thead>
+     
+      </thead>
+      <tbody>
+        <tr id="sas">
+          {% for itm in data.doctors %}
+          <td>{{itm.name}}</td>
+          
+          {% endfor %}
+        </tr>
+        <tr id="sas2">
+          {% for itm in data.doctors %}
+            {% if itm.isactive  %}
+              <td>Busy</td>
+              {%else%}
+              <td>Free</td>
+            {% endif %}            
+          {% endfor %}
+
+        </tr>
+        
+      </tbody>
+    </table>
+   
+  </div>
+  <div class="container">
+    <form class="row g-3">
+      
+      
+      <div class="col-12">
+        <label for="p_name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="p_name" placeholder="Please enter your name...">
+      </div>
+      
+      <div class="col-md-4">
+        <label for="inputState" class="form-label">State</label>
+        <select id="department" class="form-select" >
+          <option value='None' selected>Choose...</option>
+          {% for itm in data.department %}
+          <option value="{{itm.short}}">{{itm.Name}}</option>
+          {% endfor %}
+        </select>
+      </div><div class="col-md-4">
+        <label for="inputState" class="form-label">Doctors' Name</label>
+        <select id="doctors" class="form-select">
+          <option id='None1' value='None' selected>Choose...</option>
+          {% for itm in data.doctors %}
+          <option  style="display:none" class="{{itm.department}}">{{itm.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-12">
+        <button type="Check" id="check" class="btn btn-primary center">Check</button>
+      </div>
+    </form>
+    
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+   
+
+      //getdata start
+      function getdata(){
+        //continous_polling start
+        $.ajax({
+          url: "/f/continous_polling",
+          type: 'GET',
+          success: function (response) {  
+            
+            $('#sas').empty()
+            $('#sas2').empty()
+            for(var i=0;i<response.length;i++){
+              if (response[i].isactive == 0){
+                $('#sas').append("<td>"+response[i].name+"</td>")
+                $('#sas2').append("<td>Free</td>")
+              }else{
+                $('#sas').append("<td>"+response[i].name+"</td>")
+                $('#sas2').append("<td>Busy</td>")
+              }
+              
+            }
+             
+          },
+          })
+
+          //continous_polling end
+      }
+      //getdata
+
+      //fires every 1 sec
+      setInterval(getdata, 10000);
+
+
+      //dropdown change start
+      $("#department").on("change",function(){
+        
+        var conceptName = $('#department').find(":selected").val();
+        var conceptName1= document.getElementById('department').options;
+
+        for(var i=0;i<conceptName1.length;i++){
+          $('.'+conceptName1[i].value).prop('selected', false)
+          $('.'+conceptName1[i].value).css("display","none")
+        }
+         
+        $('.'+conceptName).css("display","block")
+        $('#None1 option:contains("Choose...")').prop('selected', true)      
+      });
+      //dropdown change end
+
+
+      //submit start
+      
+      $("#check").on("click",function(event){
+        event.preventDefault();
+        var doctor=$('#doctors').find(":selected").val();
+        var department=$('#department').find(":selected").val(); 
+        if($('#p_name').val()!="" && $('#department').val()!=("" || "None" ) && $('#doctors').val()!=("" || "None")){
+          $.ajax({
+            url: "/f/check2",
+            type: 'POST',
+            data: {"department":department,"name":doctor},
+            success: function (response) {
+              if (response){
+                if (response.status==0 && response.current_token && response.next_token && response.waiting_time ){
+                  var html_text="Current Token No : "+response.current_token+"</br>Next Token No : "+response.next_token+"</br>Waiting Time : "+response.waiting_time/60 + "min"
+                }else{
+                  var html=""
+                }
+                var p_name=$('#p_name').val()
+                Swal.fire({
+                  title: 'Appointment',
+                  text: p_name+',do you want to continue?',
+                  html: html_text,
+                  icon: 'question',
+                  confirmButtonText: 'confirm',
+                  showCloseButton:true,
+                  cancelButtonText: 'cancel',
+                  showCancelButton: true,
+                }).then((result) => {
+                  //if start
+                  if (result.isConfirmed ){
+                    //ajaxstart
+                    $.ajax({
+                      url: "/f/check",
+                      type: 'POST',
+                      data: {"department":department,"name":doctor},
+                      success: function (response) {     
+                        html_text=   "Token no : "+response.token   
+                          Swal.fire(
+                            {
+                              title: 'Success',
+                              text: 'Appointment Confirmed!',
+                              html: html_text,
+                              icon: 'success',
+                            }).then((result) => {
+                              window.location.replace("/f")
+                            })
+                      },
+                    })
+                      //ajaxend
+                  }
+                  //if ends
+                })//endof swalAppointment 
+              }
+            },
+            })
+            //ajax_ends
+        }else{
+          Swal.fire(
+          {
+            title: 'Please provide all the inputs!',
+            text: '',
+            icon: 'info',
+          })
+        }
+        //ajax_starts
+       
+      });
+      
+
+      
+      //submit end
+
+    
+    
+    });
+    </script>
+</body>
+</html>

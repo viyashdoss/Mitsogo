@@ -1,0 +1,100 @@
+[{
+  "_id": {
+    "$oid": "63c91fac837b67e087b20964"
+  },
+  "name": "Viyash",
+  "department": "G",
+  "isactive": 1,
+  "consulting-start-time": {
+    "$date": {
+      "$numberLong": "1674261908172"
+    }
+  },
+  "count": 4,
+  "current_patient": "",
+  "doctor_allow": true
+},{
+  "_id": {
+    "$oid": "63c91fe1837b67e087b20965"
+  },
+  "name": "Gokul",
+  "department": "E",
+  "isactive": 0,
+  "consulting-start-time": {
+    "$date": {
+      "$numberLong": "1674252530099"
+    }
+  },
+  "count": 1,
+  "current_patient": ""
+},{
+  "_id": {
+    "$oid": "63ca3f61837b67e087b20980"
+  },
+  "name": "Suresh",
+  "department": "G",
+  "isactive": 0,
+  "consulting-start-time": {
+    "$date": {
+      "$numberLong": "1674257316097"
+    }
+  },
+  "count": 1,
+  "current_patient": ""
+},{
+  "_id": {
+    "$oid": "63ca773d837b67e087b20984"
+  },
+  "name": "Suresh M",
+  "department": "P",
+  "isactive": 0,
+  "consulting-start-time": {
+    "$date": {
+      "$numberLong": "1674247894929"
+    }
+  },
+  "count": 1,
+  "current_patient": ""
+},{
+  "_id": {
+    "$oid": "63ca77ac837b67e087b20985"
+  },
+  "name": "Mano",
+  "department": "C",
+  "isactive": 0,
+  "consulting-start-time": {
+    "$date": {
+      "$numberLong": "1674247910376"
+    }
+  },
+  "count": 1,
+  "current_patient": ""
+},{
+  "_id": {
+    "$oid": "63ca77c3837b67e087b20986"
+  },
+  "name": "Gousal",
+  "department": "O",
+  "isactive": 0,
+  "consulting-start-time": {
+    "$date": {
+      "$numberLong": "1674254982637"
+    }
+  },
+  "count": 1,
+  "current_patient": ""
+},{
+  "_id": {
+    "$oid": "63ca782b837b67e087b20987"
+  },
+  "name": "Doss",
+  "department": "G",
+  "isactive": 0,
+  "consulting-start-time": {
+    "$date": {
+      "$numberLong": "1674247924516"
+    }
+  },
+  "count": 1,
+  "current_patient": ""
+}]

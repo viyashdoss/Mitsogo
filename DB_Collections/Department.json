@@ -1,0 +1,31 @@
+[{
+  "_id": {
+    "$oid": "63c91f39837b67e087b20961"
+  },
+  "Name": "General Medicine",
+  "short": "G"
+},{
+  "_id": {
+    "$oid": "63c91f90837b67e087b20962"
+  },
+  "Name": "ENT",
+  "short": "E"
+},{
+  "_id": {
+    "$oid": "63ca76f1837b67e087b20981"
+  },
+  "Name": "Orthopedics",
+  "short": "O"
+},{
+  "_id": {
+    "$oid": "63ca770e837b67e087b20982"
+  },
+  "Name": "Pediatrics",
+  "short": "P"
+},{
+  "_id": {
+    "$oid": "63ca771e837b67e087b20983"
+  },
+  "Name": "Cardiac Science",
+  "short": "C"
+}]
